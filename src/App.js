@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Main from "./components/Main";
 import Box from "./components/Box";
 import WatchedListHeader from "./components/WatchedListHeader";
-import Logo from "./components/Logo";
 import Search from "./components/Search";
 import ResultStats from "./components/ResultStats";
 
@@ -81,5 +80,3 @@ export default function App() {
     </>
   );
 }
-
-// Might create a Navbar component
