@@ -13,20 +13,24 @@ const starContainerStyle = {
 const textStyle = { lineHeight: "1", margin: "0" };
 
 export default function StarRating({ maxRating = 10 }) {
-  const [hoveredStar, setHoveredStar] = useState(0);
+  const [rating, setRating] = useState(0);
+
+  function handleRate(rating) {
+    setRating(rating);
+  }
+
   return (
     <div style={containerStyle}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
             key={i}
-            starNum={i + 1}
-            hoveredStar={hoveredStar}
-            setHoveredStar={setHoveredStar}
+            onRate={() => handleRate(i + 1)}
+            full={rating >= i + 1}
           />
         ))}
       </div>
-      <p style={textStyle}>{hoveredStar}</p>
+      <p style={textStyle}>{rating}</p>
     </div>
   );
 }
@@ -39,15 +43,10 @@ const starStyle = {
   padding: "0 2px 0 2px",
 };
 
-function Star({ starNum, hoveredStar, setHoveredStar }) {
+function Star({ starNum, onRate, full }) {
   return (
-    <span
-      onMouseEnter={() => setHoveredStar(starNum)}
-      onMouseLeave={() => setHoveredStar(0)}
-      role="button"
-      style={starStyle}
-    >
-      {starNum <= hoveredStar ? (
+    <span onClick={onRate} role="button" style={starStyle}>
+      {full ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
