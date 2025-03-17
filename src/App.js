@@ -66,7 +66,6 @@ export default function App() {
   return (
     <>
       <Navbar moviesLength={moviesLength} query={query} setQuery={setQuery}>
-        <Logo />
         <Search query={query} setQuery={setQuery} />
         <ResultStats moviesLength={moviesLength} />
       </Navbar>
