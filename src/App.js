@@ -1,6 +1,8 @@
 import { useState } from "react";
 import MovieList from "./components/MovieList";
 import WatchedList from "./components/WatchedList";
+import Navbar from "./components/Navbar";
+import Main from "./components/Main";
 
 const tempMovieData = [
   {
@@ -54,30 +56,16 @@ export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
 
+  const moviesLength = movies.length;
+
   return (
     <>
-      <nav className="nav-bar">
-        <div className="logo">
-          <span role="img">🍿</span>
-          <h1>usePopcorn</h1>
-        </div>
-        <input
-          className="search"
-          type="text"
-          placeholder="Search movies..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <p className="num-results">
-          Found <strong>{movies.length}</strong> results
-        </p>
-      </nav>
+      <Navbar moviesLength={moviesLength} query={query} setQuery={setQuery} />
 
-      <main className="main">
+      <Main>
         <MovieList movies={movies} />
-
         <WatchedList watched={watched} />
-      </main>
+      </Main>
     </>
   );
 }
