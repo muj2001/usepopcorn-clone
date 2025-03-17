@@ -3,6 +3,11 @@ import MovieList from "./components/MovieList";
 import WatchedList from "./components/WatchedList";
 import Navbar from "./components/Navbar";
 import Main from "./components/Main";
+import Box from "./components/Box";
+import WatchedListHeader from "./components/WatchedListHeader";
+import Logo from "./components/Logo";
+import Search from "./components/Search";
+import ResultStats from "./components/ResultStats";
 
 const tempMovieData = [
   {
@@ -60,11 +65,19 @@ export default function App() {
 
   return (
     <>
-      <Navbar moviesLength={moviesLength} query={query} setQuery={setQuery} />
-
+      <Navbar moviesLength={moviesLength} query={query} setQuery={setQuery}>
+        <Logo />
+        <Search query={query} setQuery={setQuery} />
+        <ResultStats moviesLength={moviesLength} />
+      </Navbar>
       <Main>
-        <MovieList movies={movies} />
-        <WatchedList watched={watched} />
+        <Box>
+          <MovieList movies={movies} />
+        </Box>
+        <Box>
+          <WatchedListHeader watched={watched} />
+          <WatchedList watched={watched} />
+        </Box>
       </Main>
     </>
   );
