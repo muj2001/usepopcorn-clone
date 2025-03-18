@@ -16,8 +16,6 @@ export default function StarRating({ maxRating = 10 }) {
   const [rating, setRating] = useState(0);
   const [hovered, setHovered] = useState(0);
 
-  const hovering = hovered > 0;
-
   function handleRate(rating) {
     setRating(rating);
   }
@@ -29,13 +27,13 @@ export default function StarRating({ maxRating = 10 }) {
           <Star
             key={i}
             onRate={() => handleRate(i + 1)}
-            full={hovering ? hovered >= i + 1 : rating >= i + 1}
+            full={hovered ? hovered >= i + 1 : rating >= i + 1}
             onHovered={() => setHovered(i + 1)}
             onMouseLeave={() => setHovered(0)}
           />
         ))}
       </div>
-      <p style={textStyle}>{hovering ? hovered : rating}</p>
+      <p style={textStyle}>{hovered ? hovered : rating}</p>
     </div>
   );
 }
