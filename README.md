@@ -1,6 +1,26 @@
-# Getting Started with Create React App
+# usePopcorn Clone
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a project created using ReactJS for learning purposes.
+
+Things I thoroughly learned and used within this project:
+
+- useState Hook in React
+- useEffect Hook in React
+- Component Composition
+- State Lifting
+- Prop Drilling
+- React's Render and Commit Phase
+- useEffect's dependencies list
+- Fetching data from an API within React, and how to update states or produce side effects using them
+- What a Fiber Tree is
+- How React's Element Tree (VirtualDOM) works, and then reconciles with the Fiber Tree, in turn getting the updates required on the DOM (Render Phase)
+- What is the purpose of passing a key to a React Component
+
+# I Created this Project using Create React App
+
+Why I chose create-react-app?
+
+- This is a small scale app for learning purposes so I did not require a build tool like Vite.
 
 ## Available Scripts
 
