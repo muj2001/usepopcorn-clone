@@ -63,6 +63,8 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+  const [movieData, setMovieData] = useState(null);
 
   const API_KEY = "b5321cec";
 
@@ -70,6 +72,10 @@ export default function App() {
   // Movie Posters API = http://img.omdbapi.com/?apikey=[yourkey]&
 
   const searchParameter = "s=";
+
+  function handleSelectMovie(id) {
+    setSelectedId(id);
+  }
 
   function handleSearch(e) {
     e.preventDefault();
@@ -97,6 +103,36 @@ export default function App() {
   }
 
   useEffect(() => {
+    async function fetchMovie() {
+      try {
+        setIsLoading(true);
+        setError("");
+        const res = await fetch(moviesAPI + "i=" + selectedId);
+
+        if (!res.ok) throw new Error("Something went wrong.");
+
+        const data = await res.json();
+
+        if (data.Response === "False") throw new Error("Something went wrong");
+        console.log(data);
+        setMovieData(data);
+      } catch (error) {
+        console.log(error.message);
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (!!selectedId) {
+      fetchMovie();
+    } else {
+      setMovieData(null);
+      setSelectedId(null);
+    }
+  }, [selectedId]);
+
+  useEffect(() => {
     async function fetchMovies() {
       try {
         setIsLoading(true);
@@ -111,7 +147,6 @@ export default function App() {
           throw new Error("No movie found. Try searching for something else");
         setMovies(data.Search);
       } catch (error) {
-        console.log(error.message);
         setError(error.message);
       } finally {
         setIsLoading(false);
@@ -135,7 +170,7 @@ export default function App() {
           ) : error ? (
             <ErrorMessage message={error} />
           ) : (
-            <MovieList movies={movies} />
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
           )}
         </Box>
         <Box>
