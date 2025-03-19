@@ -9,6 +9,7 @@ import Search from "./components/Search";
 import ResultStats from "./components/ResultStats";
 import Loader from "./components/Loader";
 import ErrorMessage from "./components/ErrorMessage";
+import SelectedMovie from "./components/SelectedMovie";
 
 const tempMovieData = [
   {
@@ -64,7 +65,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  const [movieData, setMovieData] = useState(null);
 
   const API_KEY = "b5321cec";
 
@@ -74,7 +74,11 @@ export default function App() {
   const searchParameter = "s=";
 
   function handleSelectMovie(id) {
-    setSelectedId(id);
+    setSelectedId((selId) => (selId === id ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
   }
 
   function handleSearch(e) {
@@ -101,36 +105,6 @@ export default function App() {
     }
     fetchMovies();
   }
-
-  useEffect(() => {
-    async function fetchMovie() {
-      try {
-        setIsLoading(true);
-        setError("");
-        const res = await fetch(moviesAPI + "i=" + selectedId);
-
-        if (!res.ok) throw new Error("Something went wrong.");
-
-        const data = await res.json();
-
-        if (data.Response === "False") throw new Error("Something went wrong");
-        console.log(data);
-        setMovieData(data);
-      } catch (error) {
-        console.log(error.message);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (!!selectedId) {
-      fetchMovie();
-    } else {
-      setMovieData(null);
-      setSelectedId(null);
-    }
-  }, [selectedId]);
 
   useEffect(() => {
     async function fetchMovies() {
@@ -174,8 +148,17 @@ export default function App() {
           )}
         </Box>
         <Box>
-          <WatchedListHeader watched={watched} />
-          <WatchedList watched={watched} />
+          {!!selectedId ? (
+            <SelectedMovie
+              onCloseMovie={handleCloseMovie}
+              selectedId={selectedId}
+            />
+          ) : (
+            <>
+              <WatchedListHeader watched={watched} />
+              <WatchedList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
