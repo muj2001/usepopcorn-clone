@@ -77,40 +77,9 @@ export default function App() {
   }
 
   useEffect(() => {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        setError("");
-        const res = await fetch(moviesAPI + searchParameter + "Inception", {
-          signal: controller.signal,
-        });
-
-        if (!res.ok) throw new Error("Something went wrong.");
-
-        const data = await res.json();
-
-        if (data.Response === "False")
-          throw new Error("No movie found. Try searching for something else");
-        setMovies(data.Search);
-        setError("");
-      } catch (error) {
-        if (error.name !== "AbortError") setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchMovies();
     return function () {
       controller.abort();
     };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Escape") {
-        handleCloseMovie();
-      }
-    });
   }, []);
 
   const moviesLength = movies ? movies.length : 0;

@@ -32,6 +32,20 @@ export default function SelectedMovie({
   const moviesAPI = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
 
   useEffect(() => {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onCloseMovie();
+      }
+    }
+
+    document.addEventListener("keydown", callback);
+
+    return function () {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [onCloseMovie]);
+
+  useEffect(() => {
     if (!title) return;
     document.title = `Movie | ${title}`;
 
@@ -60,7 +74,7 @@ export default function SelectedMovie({
     }
 
     fetchMovie();
-  }, [selectedId]);
+  }, [selectedId, moviesAPI]);
 
   return (
     <div className="details">
