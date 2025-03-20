@@ -24,10 +24,11 @@ export default function App() {
   const moviesAPI = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
   const searchParameter = "s=";
 
+  const movieWatched = watched
+    .map((movie) => movie.imdbID)
+    .includes(selectedId);
+
   function handleAddMovie(movieData) {
-    const movieWatched =
-      watched.filter((movie) => movie.imdbID === movieData.imdbID).length >= 1;
-    console.log(`Watched? ${movieWatched}`);
     movieWatched
       ? setWatched((watched) =>
           watched.map((movie) =>
@@ -117,11 +118,12 @@ export default function App() {
               onAddMovie={handleAddMovie}
               onCloseMovie={handleCloseMovie}
               selectedId={selectedId}
+              movieWatched={movieWatched}
             />
           ) : (
             <>
               <WatchedListHeader watched={watched} />
-              <WatchedList watched={watched} />
+              <WatchedList watched={watched} setWatched={setWatched} />
             </>
           )}
         </Box>

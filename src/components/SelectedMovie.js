@@ -7,6 +7,7 @@ export default function SelectedMovie({
   selectedId,
   onCloseMovie,
   onAddMovie,
+  movieWatched,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,6 +49,7 @@ export default function SelectedMovie({
         setIsLoading(false);
       }
     }
+
     fetchMovie();
   }, [selectedId]);
 
@@ -89,7 +91,7 @@ export default function SelectedMovie({
                   });
                 }}
               >
-                Add Movie To Watchlist
+                {movieWatched ? "Update Rating" : "Add Movie To Watchlist"}
               </button>
             </div>
           </header>
