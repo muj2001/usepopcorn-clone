@@ -66,6 +66,7 @@ export default function SelectedMovie({ selectedId, onCloseMovie }) {
               </p>
               <p>{genre}</p>
               <p>⭐ {imdbRating} on IMDb</p>
+              <button className="btn-add">Add Movie To Watchlist</button>
             </div>
           </header>
           <section>
