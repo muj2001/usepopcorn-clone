@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function WatchedMovie({ movie }) {
   return (
     <li key={movie.imdbID}>

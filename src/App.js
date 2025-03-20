@@ -22,12 +22,19 @@ export default function App() {
   const API_KEY = "b5321cec";
 
   const moviesAPI = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
-  // Movie Posters API = http://img.omdbapi.com/?apikey=[yourkey]&
-
   const searchParameter = "s=";
 
   function handleAddMovie(movieData) {
-    setWatched((watched) => [...watched, movieData]);
+    const movieWatched =
+      watched.filter((movie) => movie.imdbID === movieData.imdbID).length >= 1;
+    console.log(`Watched? ${movieWatched}`);
+    movieWatched
+      ? setWatched((watched) =>
+          watched.map((movie) =>
+            movie.imdbID === movieData.imdbID ? movieData : movie
+          )
+        )
+      : setWatched((watched) => [...watched, movieData]);
     setSelectedId(null);
   }
 
