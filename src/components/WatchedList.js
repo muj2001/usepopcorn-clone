@@ -1,4 +1,3 @@
-import { useState } from "react";
 import WatchedMovie from "./WatchedMovie";
 
 export default function WatchedList({ watched }) {
