@@ -3,14 +3,19 @@ import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
 import StarRating from "./StarRating";
 
-export default function SelectedMovie({ selectedId, onCloseMovie }) {
+export default function SelectedMovie({
+  selectedId,
+  onCloseMovie,
+  onAddMovie,
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [movie, setMovie] = useState({});
+  const [userRating, setUserRating] = useState(0);
 
   const {
+    imdbID,
     Title: title,
-    Year: year,
     Poster: poster,
     Runtime: runtime,
     imdbRating,
@@ -66,12 +71,31 @@ export default function SelectedMovie({ selectedId, onCloseMovie }) {
               </p>
               <p>{genre}</p>
               <p>⭐ {imdbRating} on IMDb</p>
-              <button className="btn-add">Add Movie To Watchlist</button>
+              <button
+                className="btn-add"
+                onClick={() => {
+                  onAddMovie({
+                    imdbID,
+                    title,
+                    poster,
+                    runtime,
+                    imdbRating,
+                    plot,
+                    released,
+                    actors,
+                    director,
+                    genre,
+                    userRating,
+                  });
+                }}
+              >
+                Add Movie To Watchlist
+              </button>
             </div>
           </header>
           <section>
             <div className="rating">
-              <StarRating />
+              <StarRating setUserRating={setUserRating} />
             </div>
             <p>
               <em>{plot}</em>
