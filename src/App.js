@@ -24,6 +24,8 @@ export default function App() {
   const moviesAPI = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
   const searchParameter = "s=";
 
+  const controller = new AbortController();
+
   const movieWatched = watched
     .map((movie) => movie.imdbID)
     .includes(selectedId);
@@ -53,7 +55,9 @@ export default function App() {
       try {
         setIsLoading(true);
         setError("");
-        const res = await fetch(moviesAPI + searchParameter + query);
+        const res = await fetch(moviesAPI + searchParameter + query, {
+          signal: controller.signal,
+        });
 
         if (!res.ok) throw new Error("Something went wrong.");
 
@@ -62,8 +66,9 @@ export default function App() {
         if (data.Response === "False")
           throw new Error("No movie found. Try searching for something else");
         setMovies(data.Search);
+        setError("");
       } catch (error) {
-        setError(error.message);
+        if (error.name !== "AbortError") setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -76,7 +81,9 @@ export default function App() {
       try {
         setIsLoading(true);
         setError("");
-        const res = await fetch(moviesAPI + searchParameter + "Inception");
+        const res = await fetch(moviesAPI + searchParameter + "Inception", {
+          signal: controller.signal,
+        });
 
         if (!res.ok) throw new Error("Something went wrong.");
 
@@ -85,13 +92,25 @@ export default function App() {
         if (data.Response === "False")
           throw new Error("No movie found. Try searching for something else");
         setMovies(data.Search);
+        setError("");
       } catch (error) {
-        setError(error.message);
+        if (error.name !== "AbortError") setError(error.message);
       } finally {
         setIsLoading(false);
       }
     }
     fetchMovies();
+    return function () {
+      controller.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape") {
+        handleCloseMovie();
+      }
+    });
   }, []);
 
   const moviesLength = movies ? movies.length : 0;

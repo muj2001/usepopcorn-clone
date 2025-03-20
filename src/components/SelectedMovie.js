@@ -32,6 +32,15 @@ export default function SelectedMovie({
   const moviesAPI = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
 
   useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title}`;
+
+    return function () {
+      document.title = "Mujnuu's usePopcorn";
+    };
+  }, [title]);
+
+  useEffect(() => {
     async function fetchMovie() {
       try {
         setIsLoading(true);
