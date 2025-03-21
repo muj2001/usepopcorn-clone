@@ -14,7 +14,10 @@ import SelectedMovie from "./components/SelectedMovie";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const stored = localStorage.getItem("watched");
+    return stored ? JSON.parse(stored) : [];
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
@@ -31,14 +34,14 @@ export default function App() {
     .includes(selectedId);
 
   function handleAddMovie(movieData) {
-    movieWatched
-      ? setWatched((watched) =>
-          watched.map((movie) =>
-            movie.imdbID === movieData.imdbID ? movieData : movie
-          )
+    const newWatched = movieWatched
+      ? watched.map((movie) =>
+          movie.imdbID === movieData.imdbID ? movieData : movie
         )
-      : setWatched((watched) => [...watched, movieData]);
-    setSelectedId(null);
+      : [...watched, movieData];
+    setWatched(newWatched);
+
+    handleCloseMovie();
   }
 
   function handleSelectMovie(id) {
@@ -81,6 +84,10 @@ export default function App() {
       controller.abort();
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
 
   const moviesLength = movies ? movies.length : 0;
 
